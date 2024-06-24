@@ -12,6 +12,7 @@
 # **2. 본론**
 ## **2.1 해결법 제시**
 **<주요 변수>**
+
 vector<Ciphertext> name_db: 장소의 이름을 저장할 저장소
 
 vector<Ciphertext> coord_db: 장소의 좌표를 저장할 저장소
