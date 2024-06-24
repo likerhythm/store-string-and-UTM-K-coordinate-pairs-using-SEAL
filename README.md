@@ -25,16 +25,17 @@ int coord_data_size: 좌표 데이터에 할당할 암호문 수
 ## **2.2 구현**
 ### **2.2.1 환경 설정**
 
+```C++
 parms = EncryptionParameters(scheme_type::bfv);
 poly_modulus_degree = 16384; // 한 암호문에 16384개 메시지 담을 수 있음.
 parms.set_poly_modulus_degree(poly_modulus_degree);
         parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
 parms.set_plain_modulus(673);
-
+```
 시스템 환경설정을 진행할 때 plain_modulus의 값을 소수 673으로 설정한다. 앞서 각 암호문이 가질 수 있는 최대 값이 648이므로 이보다 크고, 페르마 소정리 적용 시 지수승 계산을 비교적 빠르게 수행할 수 있는 소수로 선택하였다.
 ### **2.2.2 페르마의 소정리 구현**
 P=673으로 설정한 이유는 곱하기 수를 줄이기 위함이다. 페르마의 소정리를 사용하면 a를 672번 곱해야 하지만 곱하기 수가 너무 많기 때문에 672=2^5*3*7이라는 것을 사용하여 곱하기 수를 줄여서 a^672을 구할 수 있다.
-
+```C++
 Ciphertext SEALTools::calc_mod(Ciphertext enc) {
 for (int i = 0; i < 4; i++) {
 cout << "log - 제곱" << endl;
@@ -59,7 +60,7 @@ cout << "log - invariant_nois_budget:";
 cout << decryptor->invariant_noise_budget(enc) << endl << endl;
 return enc;
 }
-
+```
 ## **2.2 문제점**
 **- 계산 시간**
 적절한 P를 선택하여 곱하기수를 줄였다고 하지만 하나의 데이터에 대해 페르마 소정리를 적용할 때 4분정도의 시간이 소요되므로 아직까지 계산시간이 느리다.
